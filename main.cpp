@@ -83,7 +83,7 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
     }
     else if (czyt=='x')
     {
-        return 4;
+        return 3;
     }
     else return 0;
 }
@@ -91,8 +91,7 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
 ///zero - niepoprawna wartosc
 ///jeden - nastapila zamiana
 ///dwa - wartosc poprawna, nie nastapila zamiana
-///trzy - nastapila zmiana, nastapila wygrana
-///cztery - zamknij program
+///trzy - zamknij program
 
 void wyswietl(int **T,int m)
 {
@@ -101,7 +100,6 @@ void wyswietl(int **T,int m)
     cout<<"\nPrzesuwaj klocki na planszy za pomoca klawiszy w s a d.\n\'x\' oznacza wyjscie z gry.";
     cout<<"\n------------------------\n";
     if (m<4)
-    {
         for (int i=0; i<m; i++)
         {
             for (int j=0; j<m; j++)
@@ -115,12 +113,9 @@ void wyswietl(int **T,int m)
                 else
                     cout<<T[i][j]<<" ";
             }
-
             cout<<endl;
         }
-    }
     else if (m<11)
-    {
         for (int i=0; i<m; i++)
         {
             for (int j=0; j<m; j++)
@@ -135,16 +130,26 @@ void wyswietl(int **T,int m)
                 else cout<<T[i][j]<<" ";
             cout<<endl;
         }
-    }
+}
+
+bool identyczne (int **T, int **F, int m)
+{
+    for (int i=0; i<m; i++)
+        for (int j=0; j<m; j++)
+        {
+            if (T[i][j]!=F[i][j]) return false;
+        }
+    return true;
 }
 
 int main()
 {
     color(15);
+    system("CLS");
     cout<<"Witaj w grze \"pietnastka\"! wybierz poziom trudnosci: ";
     int m;
     cin>>m;
-    if (m<2)
+    if (m<3)
     {
         cout<<"niestety to niemozliwe.";
         return 0;
@@ -166,31 +171,59 @@ int main()
         }
     T[m-1][m-1]=0;
 
+    int ** F = new int * [m];
+    for (int i=0; i<m; i++)
+        F[i] = new int [m];
+    licz=1;
+    for (int i=0; i<m; i++)
+        for (int j=0; j<m; j++)
+        {
+            F[i][j]=licz;
+            licz++;
+        }
+    F[m-1][m-1]=0;
+
     int a=m-1,b=m-1;
     int ruchy;
-    char czyt;
     //zrobic stringa ktory pozwoli na zapisywanie swojego wyniku i na cofanie ruchow.
     wyswietl(T,m);
     for (;;)
     {
-///zero - niepoprawna wartosc
-///jeden - nastapila zamiana
-///dwa - wartosc poprawna, nie nastapila zamiana
-///trzy - nastapila zmiana, nastapila wygrana
-///cztery - zamknij program
-        czyt=getch();
-        ruchy=ruch(T,a,b,T[a][b],m,czyt);
-        if (ruchy==4)
+        ruchy=ruch( T,a,b,T[a][b],m,char( getch() ) );
+        if (ruchy==3)
         {
             for (int i=0; i<m; i++)
                 delete [] T[i];
             delete [] T;
+            for (int i=0; i<m; i++)
+                delete [] F[i];
+            delete [] F;
             return 0;
         }
         else if (ruchy==0)
         {
             wyswietl(T,m);
             cout<<"NIEPOPRAWNA WARTOSC";
+        }
+        else if (ruchy==1 && a==m-1 && b==m-1)
+        {
+            if (identyczne(T,F,m))
+            {
+                wyswietl(T,m);
+                cout<<"\nBrawo! Wygrales!!!\nCzy chcesz kontynuowac rozgrywke?";
+                cout<<"\nWpisz \"tak\" lub program sie zakonczy.\n";
+                string raz;
+                cin>>raz;
+                if (raz="tak")
+                    main();
+                for (int i=0; i<m; i++)
+                    delete [] T[i];
+                delete [] T;
+                for (int i=0; i<m; i++)
+                    delete [] F[i];
+                delete [] F;
+                return 0;
+            }
         }
         else if (ruchy==1)
         {
