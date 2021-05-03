@@ -205,16 +205,15 @@ int main()
             wyswietl(T,m);
             cout<<"NIEPOPRAWNA WARTOSC";
         }
-        else if (ruchy==1 && a==m-1 && b==m-1)
+        else if (ruchy==1 && a==m-1 && b==m-1 && identyczne(T,F,m))
         {
-            if (identyczne(T,F,m))
-            {
+
                 wyswietl(T,m);
                 cout<<"\nBrawo! Wygrales!!!\nCzy chcesz kontynuowac rozgrywke?";
                 cout<<"\nWpisz \"tak\" lub program sie zakonczy.\n";
                 string raz;
                 cin>>raz;
-                if (raz="tak")
+                if (raz=="tak")
                     main();
                 for (int i=0; i<m; i++)
                     delete [] T[i];
@@ -223,7 +222,6 @@ int main()
                     delete [] F[i];
                 delete [] F;
                 return 0;
-            }
         }
         else if (ruchy==1)
         {
