@@ -46,7 +46,7 @@ void right(int **T, int a,int &b,int x)
 
 int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
 {
-    if (czyt=='w')
+    if (czyt=='w'||czyt=='W')
     {
         if(a+1==m) return 2;
         else
@@ -55,7 +55,7 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
             return 1;
         }
     }
-    else if (czyt=='s')
+    else if (czyt=='s'||czyt=='S')
     {
         if(a==0) return 2;
         else
@@ -64,7 +64,7 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
             return 1;
         }
     }
-    else if (czyt=='a')
+    else if (czyt=='a'||czyt=='A')
     {
         if(b+1==m) return 2;
 
@@ -74,7 +74,7 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
             return 1;
         }
     }
-    else if  (czyt=='d')
+    else if  (czyt=='d'||czyt=='D')
     {
         if(b==0) return 2;
         else
@@ -83,7 +83,7 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
             return 1;
         }
     }
-    else if (czyt=='x')
+    else if (czyt=='x'||czyt=='X')
     {
         return 3;
     }
@@ -118,7 +118,7 @@ void wyswietl(int **T,int m)
             {
                 if (T[i][j]==0)
                 {
-                    color(14);
+                    color(0);
                     cout<<"0 ";
                     color(15);
                 }
@@ -134,7 +134,7 @@ void wyswietl(int **T,int m)
                 if (T[i][j]<10)
                     if (T[i][j]==0)
                     {
-                        color(14);
+                        color(0);
                         cout<<"00 ";
                         color(15);
                     }
@@ -158,7 +158,13 @@ int main()
 {
     color(15);
     system("CLS");
-    cout<<"Witaj w grze \"pietnastka\"! wybierz poziom trudnosci: ";
+    cout<<"   _________                         __   \n";
+    cout<<"  <  / ____/  ____  __  __________  / /__ \n";
+    cout<<"  / /___ \\   / __ \\/ / / /_  /_  / / / _ \\\n";
+    cout<<" / /___/ /  / /_/ / /_/ / / /_/ /_/ /  __/\n";
+    cout<<"/_/_____/  / .___/\\__,_/ /___/___/_/\\___/ \n";
+    cout<<"          /_/                             \n\n";
+    cout<<"Witaj w grze \"Pietnastka\"! \nWybierz poziom trudnosci: ";
     int m;
     cin>>m;
     if (m<3)
@@ -169,6 +175,8 @@ int main()
     else if (m>11)
     {
         cout<<"Zbyt epicki poziom trudnosci! ;)";
+        getch();
+        main();
         return 0;
     }
     int ** T = new int * [m];
@@ -199,7 +207,7 @@ int main()
     int ruchy;
     //zrobic stringa ktory pozwoli na zapisywanie swojego wyniku i na cofanie ruchow.
     srand( time( NULL ) );
-    for (int i=0;i<9000;i++)
+    for (int i=0; i<9000; i++)
     {
         ruch( T,a,b,T[a][b],m,int(rand()));
     }
@@ -225,20 +233,20 @@ int main()
         else if (ruchy==1 && a==m-1 && b==m-1 && identyczne(T,F,m))
         {
 
-                wyswietl(T,m);
-                cout<<"\nBrawo! Wygrales!!!\nCzy chcesz kontynuowac rozgrywke?";
-                cout<<"\nWpisz \"tak\" lub program sie zakonczy.\n";
-                string raz;
-                cin>>raz;
-                if (raz=="tak")
-                    main();
-                for (int i=0; i<m; i++)
-                    delete [] T[i];
-                delete [] T;
-                for (int i=0; i<m; i++)
-                    delete [] F[i];
-                delete [] F;
-                return 0;
+            wyswietl(T,m);
+            cout<<"\nBrawo! Wygrales!!!\nCzy chcesz kontynuowac rozgrywke?";
+            cout<<"\nWpisz \"tak\" lub program sie zakonczy.\n";
+            string raz;
+            cin>>raz;
+            if (raz=="tak")
+                main();
+            for (int i=0; i<m; i++)
+                delete [] T[i];
+            delete [] T;
+            for (int i=0; i<m; i++)
+                delete [] F[i];
+            delete [] F;
+            return 0;
         }
         else if (ruchy==1)
         {
