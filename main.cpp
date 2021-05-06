@@ -1,6 +1,8 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -86,6 +88,16 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
         return 3;
     }
     else return 0;
+}
+
+void ruch(int **T, int &a, int &b,int zamiana, int m, int los)
+{
+    char czyt;
+    if (los%4==1) czyt='w';
+    else if (los%4==2) czyt='s';
+    else if (los%4==3) czyt='a';
+    else czyt='d';
+    ruch(T,a,b,T[a][b],m,czyt);
 }
 
 ///zero - niepoprawna wartosc
@@ -186,6 +198,11 @@ int main()
     int a=m-1,b=m-1;
     int ruchy;
     //zrobic stringa ktory pozwoli na zapisywanie swojego wyniku i na cofanie ruchow.
+    srand( time( NULL ) );
+    for (int i=0;i<9000;i++)
+    {
+        ruch( T,a,b,T[a][b],m,int(rand()));
+    }
     wyswietl(T,m);
     for (;;)
     {
