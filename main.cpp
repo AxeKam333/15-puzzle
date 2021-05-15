@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <cstdlib>
 #include <ctime>
+#include <cstring>
 
 using namespace std;
 
@@ -44,7 +45,7 @@ void right(int **T, int a,int &b,int x)
     return;
 }
 
-int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
+int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)///poprosi jeszcze o stringa z zapisem i tam bedzie dokonywac zmian
 {
     if (czyt=='w'||czyt=='W')
     {
@@ -83,12 +84,16 @@ int ruch(int **T, int &a, int &b,int zamiana, int m, char czyt)
             return 1;
         }
     }
+    ///nalezy dodac jeszcze literke r ktora cofa ruch. bedzie wywolywala funkcje dla poprzedniej
+    ///zapisanej w stringu literki po czym bedzie ja usuwala.
     else if (czyt=='x'||czyt=='X')
     {
         return 3;
     }
     else return 0;
 }
+
+///moze byc uzywana do uzywania nasionka
 
 void ruch(int **T, int &a, int &b,int zamiana, int m, int los)
 {
@@ -120,7 +125,7 @@ void wyswietl(int **T,int m)
                 {
                     color(0);
                     cout<<"0 ";
-                    color(15);
+                    color(7);
                 }
                 else
                     cout<<T[i][j]<<" ";
@@ -136,7 +141,7 @@ void wyswietl(int **T,int m)
                     {
                         color(0);
                         cout<<"00 ";
-                        color(15);
+                        color(7);
                     }
                     else cout<<"0"<<T[i][j]<<" ";
                 else cout<<T[i][j]<<" ";
@@ -156,7 +161,7 @@ bool identyczne (int **T, int **F, int m)
 
 int main()
 {
-    color(15);
+    color(9);
     system("CLS");
     cout<<"   _________                         __   \n";
     cout<<"  <  / ____/  ____  __  __________  / /__ \n";
@@ -164,20 +169,33 @@ int main()
     cout<<" / /___/ /  / /_/ / /_/ / / /_/ /_/ /  __/\n";
     cout<<"/_/_____/  / .___/\\__,_/ /___/___/_/\\___/ \n";
     cout<<"          /_/                             \n\n";
-    cout<<"Witaj w grze \"Pietnastka\"! \nWybierz poziom trudnosci: ";
-    int m;
-    cin>>m;
-    if (m<3)
+    color(7);
+    cout<<"Witaj w grze \"Pietnastka\"!\nWybierz tryb gry:\n1 - spokojna gra";
+    cout<<"\n2 - gra na czas\n3 - wczytaj plansze\n";
+    int tryb;
+    cin>>tryb;
+    if (tryb<1||tryb>3)
     {
         cout<<"niestety to niemozliwe.";
-        return 0;
-    }
-    else if (m>11)
-    {
-        cout<<"Zbyt epicki poziom trudnosci! ;)";
         getch();
         main();
         return 0;
+    }
+    cout<<"Wybierz poziom trudnosci: ";
+    int m;
+    cin>>m;
+    if (m<3||m>10)
+    {
+        cout<<"niestety to niemozliwe.";
+        getch();
+        main();
+        return 0;
+    }
+    if (tryb==3)
+    {
+        cout<<"Wpisz nasiono gry: ";
+        string wczyt;
+        cin>>wczyt;
     }
     int ** T = new int * [m];
     for (int i=0; i<m; i++)
@@ -205,12 +223,16 @@ int main()
 
     int a=m-1,b=m-1;
     int ruchy;
-    //zrobic stringa ktory pozwoli na zapisywanie swojego wyniku i na cofanie ruchow.
+    ///zrobic stringa ktory pozwoli na zapisywanie swojego wyniku i na cofanie ruchow.
+    ///ustawienia, ktore na poczatku pozwalaja na zmiane kolorkow
     srand( time( NULL ) );
-    for (int i=0; i<9000; i++)
-    {
+    if (tryb!=3)
+    for (int i=0; i<1000; i++)
         ruch( T,a,b,T[a][b],m,int(rand()));
-    }
+    else
+        for (int i=0; i<wczyt.size();i++)
+            ruch( T,a,b,T[a][b],m,wczyt[i]);
+
     wyswietl(T,m);
     for (;;)
     {
